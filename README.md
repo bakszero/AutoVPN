@@ -1,4 +1,5 @@
 # AutoVPN
+Author: Bakhtiyar Syed
 
 This is an automatic VPN installer/runner for IIIT-H students.
 
@@ -6,7 +7,7 @@ This is an automatic VPN installer/runner for IIIT-H students.
 **Usage:**
 >
 1. After downloading the zip, extract it.
-2. cd AutoVPN/
+2. cd AutoVPN/ OR cd AutoVPN-master/ (depending on your mode of download via cloning or direct download.)
 3. sudo sh autovpn.sh emailID password
 
 (Your official IIIT-H students/research email and password must be entered in place of emailID and password respectively.)
