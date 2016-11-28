@@ -20,7 +20,7 @@ None (:
 >
 Works only on Ubuntu(apt-get package) related systems right now.
 You need to run the script with root access(sudo).
-Also, if you need to close the process running the VPN, just run ps -ef | grep autovpn on your terminal, note the process id of autovpn and kill the process via kill -9 pidnumber.
+>Also, if you need to close the process running the VPN, just run ps -ef | grep autovpn on your terminal, note the process id of autovpn and kill the process via kill -9 pidnumber.
 
 *Pull requests and suggestions for improvement are most welcome.*
 
