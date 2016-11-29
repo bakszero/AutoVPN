@@ -12,8 +12,19 @@ usr=$1;
 passwd=$2;
 
 cd;
-command -v openvpn >/dev/null 2>&1 || { apt-get update; apt-get install openvpn; }
-command -v expect >/dev/null 2>&1 || { apt-get update; apt-get install expect;
+command -v openvpn >/dev/null 2>&1 || {
+	if command -v apt-get 2&>1; then    # Ubuntu based distros
+		apt-get update; apt-get install openvpn;
+	elif command -v dnf 2&>1; then      # Fedora based distros
+		dnf install -y openvpn
+	fi
+}
+command -v expect >/dev/null 2>&1 || {
+	if command -v apt-get 2&>1; then    # Ubuntu based distros
+		apt-get update; apt-get install expect;
+	elif command -v dnf 2&>1; then      # Fedora based distros
+		dnf install -y expect
+	fi
 }
 
 if grep -q  "nameserver 10.4.20.204" "/etc/resolv.conf";
