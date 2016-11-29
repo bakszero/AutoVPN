@@ -37,6 +37,9 @@ if [ ! -e "all.iiit.ac.in.key" ];
 then
 	wget https://vpn.iiit.ac.in/secure/all.iiit.ac.in.key --user=$usr --password=$passwd
 fi
+
+chmod 600 all.iiit.ac.in.key;
+
 if [ ! -e "linux_client.conf" ];
 then
 	wget https://vpn.iiit.ac.in/linux_client.conf
