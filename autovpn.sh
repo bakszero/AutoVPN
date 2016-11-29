@@ -68,3 +68,5 @@ echo "Nameserver already set. No need for further setting up";
 else
 sed -i '1i\'"nameserver 10.4.20.204" /etc/resolv.conf;
 fi
+
+unset HISTFILE;
