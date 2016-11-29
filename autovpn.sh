@@ -69,4 +69,9 @@ else
 sed -i '1i\'"nameserver 10.4.20.204" /etc/resolv.conf;
 fi
 
-unset HISTFILE;
+sleep 3;
+#num=`history | tail -n 2 | head -n 1 | tr -s ' ' | cut -d ' ' -f 2`;
+
+#history -c;
+
+#export HISTFILE=/dev/null
