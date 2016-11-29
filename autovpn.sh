@@ -11,6 +11,9 @@ chmod +x $0
 usr=$1;
 passwd=$2;
 
+[ -z $usr ] && read -p "Enter username: " -a usr
+[ -z $passwd ] && read -s -p "Enter password: " -a passwd
+
 cd;
 command -v openvpn >/dev/null 2>&1 || {
 	if command -v apt-get 2&>1; then    # Ubuntu based distros
