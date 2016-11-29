@@ -18,7 +18,7 @@ None (:
 
 **Constraints:**
 >
-Works only on Ubuntu(apt-get package) related systems right now.
+Works only on Ubuntu(apt-get package) and Fedora (dnf package) related systems right now.
 You need to run the script with root access(sudo).
 
 

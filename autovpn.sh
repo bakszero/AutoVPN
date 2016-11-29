@@ -11,9 +11,23 @@ chmod +x $0
 usr=$1;
 passwd=$2;
 
+[ -z $usr ] && read -p "Enter username: " -a usr
+[ -z $passwd ] && read -s -p "Enter password: " -a passwd
+
 cd;
-command -v openvpn >/dev/null 2>&1 || { apt-get update; apt-get install openvpn; }
-command -v expect >/dev/null 2>&1 || { apt-get update; apt-get install expect;
+command -v openvpn >/dev/null 2>&1 || {
+	if command -v apt-get 2&>1; then    # Ubuntu based distros
+		apt-get update; apt-get install openvpn;
+	elif command -v dnf 2&>1; then      # Fedora based distros
+		dnf install -y openvpn
+	fi
+}
+command -v expect >/dev/null 2>&1 || {
+	if command -v apt-get 2&>1; then    # Ubuntu based distros
+		apt-get update; apt-get install expect;
+	elif command -v dnf 2&>1; then      # Fedora based distros
+		dnf install -y expect
+	fi
 }
 
 if grep -q  "nameserver 10.4.20.204" "/etc/resolv.conf";
@@ -35,7 +49,7 @@ then
 fi
 if [ ! -e "all.iiit.ac.in.key" ];
 then
-	wget https://vpn.iiit.ac.in/secure/all.iiit.ac.in.key --user=$usr --password=$passwd
+	wget https://vpn.iiit.ac.in/secure/all.iiit.ac.in.key --user="$usr" --password="$passwd"
 fi
 
 chmod 600 all.iiit.ac.in.key;
@@ -45,6 +59,10 @@ then
 	wget https://vpn.iiit.ac.in/linux_client.conf
 fi
 
+
+# Escape dollars in usr and passwd for expect's send
+usr=$(echo "$usr"| sed  's/\$/\\\$/g')
+passwd=$(echo "$passwd"| sed  's/\$/\\\$/g')
 
 
 expect <<- DONE
