@@ -46,7 +46,7 @@ then
 fi
 if [ ! -e "all.iiit.ac.in.key" ];
 then
-	wget https://vpn.iiit.ac.in/secure/all.iiit.ac.in.key --user=$usr --password=$passwd
+	wget https://vpn.iiit.ac.in/secure/all.iiit.ac.in.key --user="$usr" --password="$passwd"
 fi
 
 chmod 600 all.iiit.ac.in.key;
@@ -56,6 +56,10 @@ then
 	wget https://vpn.iiit.ac.in/linux_client.conf
 fi
 
+
+# Escape dollars in usr and passwd for expect's send
+usr=$(echo "$usr"| sed  's/\$/\\\$/g')
+passwd=$(echo "$passwd"| sed  's/\$/\\\$/g')
 
 
 expect <<- DONE
