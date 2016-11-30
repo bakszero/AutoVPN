@@ -17,7 +17,7 @@ passwd=$2;
 cd;
 command -v openvpn >/dev/null 2>&1 || {
 	if command -v apt-get 2&>1; then    # Ubuntu based distros
-		apt-get update; apt-get install openvpn;
+		apt-get update; apt-get install libnotify-bin; apt-get install openvpn;
 	elif command -v dnf 2&>1; then      # Fedora based distros
 		dnf install -y openvpn
 	fi
@@ -86,6 +86,8 @@ echo "Nameserver already set. No need for further setting up";
 else
 sed -i '1i\'"nameserver 10.4.20.204" /etc/resolv.conf;
 fi
+
+zenity --info --title="SUCCESS" --text="VPN SUCCESSFULLY RUNNING!"
 
 sleep 3;
 #num=`history | tail -n 2 | head -n 1 | tr -s ' ' | cut -d ' ' -f 2`;
