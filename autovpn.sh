@@ -15,9 +15,18 @@ passwd=$2;
 [ -z $passwd ] && read -s -p "Enter password: " -a passwd
 
 cd;
+
+command -v zenity >/dev/null 2>&1 || {
+	if command -v apt-get 2&>1; then
+		apt-get update; apt-get install zenity;
+	elif command -v dnf 2&>1; then
+		dnf install zenity
+	fi
+}
+
 command -v openvpn >/dev/null 2>&1 || {
 	if command -v apt-get 2&>1; then    # Ubuntu based distros
-		apt-get update; apt-get install libnotify-bin; apt-get install openvpn;
+		apt-get update; apt-get install openvpn;
 	elif command -v dnf 2&>1; then      # Fedora based distros
 		dnf install -y openvpn
 	fi
@@ -54,11 +63,12 @@ fi
 
 chmod 600 all.iiit.ac.in.key;
 
-if [ ! -e "linux_client.conf" ];
+if [ -e "linux_client.conf" ];
 then
-	wget https://vpn.iiit.ac.in/linux_client.conf
+	rm -f linux_client.conf;
 fi
 
+wget https://vpn.iiit.ac.in/linux_client.conf
 
 # Escape dollars in usr and passwd for expect's send
 usr=$(echo "$usr"| sed  's/\$/\\\$/g')
