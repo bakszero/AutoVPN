@@ -17,26 +17,21 @@ passwd=$2;
 cd;
 command -v openvpn >/dev/null 2>&1 || {
 	if command -v apt-get 2&>1; then    # Ubuntu based distros
-		apt-get update; apt-get install openvpn;
+		apt-get update; apt-get install -y openvpn;
 	elif command -v dnf 2&>1; then      # Fedora based distros
 		dnf install -y openvpn
 	fi
 }
-command -v expect >/dev/null 2>&1 || {
-	if command -v apt-get 2&>1; then    # Ubuntu based distros
-		apt-get update; apt-get install expect;
-	elif command -v dnf 2&>1; then      # Fedora based distros
-		dnf install -y expect
+if command -v apt-get 2&>1; then    # Ubuntu based distros
+	if [ $(dpkg-query -W -f='${Status}' openresolv 2>/dev/null | grep -c "ok installed") -eq 0 ];
+	then
+		apt-get -y install openresolv;
 	fi
-}
-
-if grep -q  "nameserver 10.4.20.204" "/etc/resolv.conf";
-then
-sed -i '/nameserver 10.4.20.204/d' /etc/resolv.conf
+elif command -v dnf 2&>1; then
+	if ! rpm -qa | grep -qw openresolv; then
+	    dnf install -y openresolv
+	fi     # Fedora based distros
 fi
-#apt-get update;
-
-
 
 cd /etc/openvpn;
 if [ ! -e "ca.crt" ];
@@ -59,35 +54,25 @@ then
 	wget https://vpn.iiit.ac.in/linux_client.conf
 fi
 
+if [ ! -e "update-resolv-conf.sh" ];
+then
+	wget https://raw.githubusercontent.com/masterkorp/openvpn-update-resolv-conf/master/update-resolv-conf.sh
+fi
+chmod +x update-resolv-conf.sh
 
 # Escape dollars in usr and passwd for expect's send
 usr=$(echo "$usr"| sed  's/\$/\\\$/g')
 passwd=$(echo "$passwd"| sed  's/\$/\\\$/g')
+echo "$usr" > auth.txt
+echo "$passwd" >> auth.txt
+chmod 700 auth.txt
+echo 'auth-user-pass auth.txt'  >> linux_client.conf
+echo 'script-security 2'  >> linux_client.conf
+echo 'up "/etc/openvpn/update-resolv-conf.sh"'  >> linux_client.conf
+echo 'down "/etc/openvpn/update-resolv-conf.sh"' >> linux_client.conf
 
+openvpn --config linux_client.conf
 
-expect <<- DONE
-
-	spawn openvpn --config linux_client.conf;
-
-	expect "Enter Auth Username:" { send "$usr\r" }
-
-	expect "Enter Auth Password:" { send "$passwd\r" }
-
-	expect "Initialization Sequence Completed"
-
-	
-	interact;
-DONE
-
-sleep 12;
-if grep -q  "nameserver 10.4.20.204" "/etc/resolv.conf";
-then
-echo "Nameserver already set. No need for further setting up";
-else
-sed -i '1i\'"nameserver 10.4.20.204" /etc/resolv.conf;
-fi
-
-sleep 3;
 #num=`history | tail -n 2 | head -n 1 | tr -s ' ' | cut -d ' ' -f 2`;
 
 #history -c;
