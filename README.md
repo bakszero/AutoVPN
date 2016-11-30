@@ -21,7 +21,10 @@ None (:
 Works only on Ubuntu(apt-get package) and Fedora (dnf package) related systems right now.
 You need to run the script with root access(sudo).
 
-
+**QUICK INSTALL**
+```
+wget -qO- 'https://raw.githubusercontent.com/mukulhase/AutoVPN/master/autovpn.sh' | sudo bash /dev/stdin email password
+```
 
 *Pull requests and suggestions for improvement are most welcome.*
 

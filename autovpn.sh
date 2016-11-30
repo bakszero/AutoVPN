@@ -52,6 +52,10 @@ chmod 600 all.iiit.ac.in.key;
 if [ ! -e "linux_client.conf" ];
 then
 	wget https://vpn.iiit.ac.in/linux_client.conf
+	echo 'auth-user-pass auth.txt'  >> linux_client.conf
+	echo 'script-security 2'  >> linux_client.conf
+	echo 'up "/etc/openvpn/update-resolv-conf.sh"'  >> linux_client.conf
+	echo 'down "/etc/openvpn/update-resolv-conf.sh"' >> linux_client.conf
 fi
 
 if [ ! -e "update-resolv-conf.sh" ];
@@ -66,10 +70,8 @@ passwd=$(echo "$passwd"| sed  's/\$/\\\$/g')
 echo "$usr" > auth.txt
 echo "$passwd" >> auth.txt
 chmod 700 auth.txt
-echo 'auth-user-pass auth.txt'  >> linux_client.conf
-echo 'script-security 2'  >> linux_client.conf
-echo 'up "/etc/openvpn/update-resolv-conf.sh"'  >> linux_client.conf
-echo 'down "/etc/openvpn/update-resolv-conf.sh"' >> linux_client.conf
+
+echo 'alias vpn="cd /etc/openvpn;sudo openvpn --config linux_client.conf"' >> ~/.bash_aliases
 
 openvpn --config linux_client.conf
 
