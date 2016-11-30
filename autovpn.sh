@@ -11,18 +11,21 @@ chmod +x $0
 usr=$1;
 passwd=$2;
 
-[ -z $usr ] && read -p "Enter username: " -a usr
-[ -z $passwd ] && read -s -p "Enter password: " -a passwd
+command -v zenity >/dev/null 2>&1 || {
+        if command -v apt-get 2&>1; then
+                apt-get update; apt-get install zenity;
+        elif command -v dnf 2&>1; then
+                dnf install zenity
+        fi
+}
+
+
+
+[ -z $usr ] && usr="$(zenity --entry --text="Enter your IIIT-H email ID" --title=Authentication)\n"
+[ -z $passwd ] && passwd="$(zenity --password --text="Please enter your password" --title=Authentication)\n"
 
 cd;
 
-command -v zenity >/dev/null 2>&1 || {
-	if command -v apt-get 2&>1; then
-		apt-get update; apt-get install zenity;
-	elif command -v dnf 2&>1; then
-		dnf install zenity
-	fi
-}
 
 command -v openvpn >/dev/null 2>&1 || {
 	if command -v apt-get 2&>1; then    # Ubuntu based distros
