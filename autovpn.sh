@@ -60,7 +60,7 @@ fi
 
 if [ ! -e "update-resolv-conf.sh" ];
 then
-	wget https://raw.githubusercontent.com/masterkorp/openvpn-update-resolv-conf/master/update-resolv-conf.sh
+	wget https://raw.githubusercontent.com/mukulhase/openvpn-update-resolv-conf/master/update-resolv-conf.sh
 fi
 chmod +x update-resolv-conf.sh
 
