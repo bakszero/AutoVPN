@@ -21,9 +21,13 @@ command -v zenity >/dev/null 2>&1 || {
 
 
 
-[ -z $usr ] && usr="$(zenity --entry --text="Enter your IIIT-H email ID" --title=Authentication)\n"
-[ -z $passwd ] && passwd="$(zenity --password --text="Please enter your password" --title=Authentication)\n"
 
+[ -z $usr ] && read -p "Enter username: " -a usr
+[ -z $passwd ] && read -s -p "Enter password: " -a passwd
+
+
+#[ -z $usr ] && usr="$(zenity --entry --height=160 --width=400 --text="Enter your IIIT-H email ID" --title=Authentication)\n"
+#[ -z $passwd ] && passwd="$(zenity --password --height=160 --width=400 --text="Please enter your password" --title=Authentication)\n"
 cd;
 
 
@@ -51,21 +55,29 @@ fi
 
 
 cd /etc/openvpn;
-if [ ! -e "ca.crt" ];
+#rm -rf *
+if [ -e "ca.crt" ];
 then
-	wget https://vpn.iiit.ac.in/ca.crt
+	rm ca.crt
 fi
-if [ ! -e "all.iiit.ac.in.crt" ];
+
+wget https://vpn.iiit.ac.in/ca.crt
+if [  -e "all.iiit.ac.in.crt" ];
 then
-	wget https://vpn.iiit.ac.in/all.iiit.ac.in.crt
+	rm -f https://vpn.iiit.ac.in/all.iiit.ac.in.crt
 fi
-if [ ! -e "all.iiit.ac.in.key" ];
+
+wget https://vpn.iiit.ac.in/all.iiit.ac.in.crt
+if [  -e "all.iiit.ac.in.key" ];
 then
-	wget https://vpn.iiit.ac.in/secure/all.iiit.ac.in.key --user="$usr" --password="$passwd"
+	rm all.iiit.ac.in.key
 fi
+
+curl -O --user "$usr":"$passwd" https://vpn.iiit.ac.in/secure/all.iiit.ac.in.key
+
+#fi
 
 chmod 600 all.iiit.ac.in.key;
-
 if [ -e "linux_client.conf" ];
 then
 	rm -f linux_client.conf;
@@ -77,7 +89,16 @@ wget https://vpn.iiit.ac.in/linux_client.conf
 usr=$(echo "$usr"| sed  's/\$/\\\$/g')
 passwd=$(echo "$passwd"| sed  's/\$/\\\$/g')
 
+#Remove newline chars
+#dt=${dt//$'\n'/}
+#dt=${dt//$'\n'/}
+usr="${usr//$'\\n'/}"
+passwd="${passwd//$'\\n'/}"
+#passwd="$(echo "$passwd" | sed -e 's/\n//g')"
 
+
+
+echo $passwd
 expect <<- DONE
 
 	spawn openvpn --config linux_client.conf;
@@ -88,7 +109,7 @@ expect <<- DONE
 
 	expect "Initialization Sequence Completed"
 
-	
+
 	interact;
 DONE
 
