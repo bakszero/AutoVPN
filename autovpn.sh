@@ -22,12 +22,12 @@ command -v zenity >/dev/null 2>&1 || {
 
 
 
-[ -z $usr ] && read -p "Enter username: " -a usr
-[ -z $passwd ] && read -s -p "Enter password: " -a passwd
+#[ -z $usr ] && read -p "Enter username: " -a usr
+#[ -z $passwd ] && read -s -p "Enter password: " -a passwd
 
 
-#[ -z $usr ] && usr="$(zenity --entry --height=160 --width=400 --text="Enter your IIIT-H email ID" --title=Authentication)\n"
-#[ -z $passwd ] && passwd="$(zenity --password --height=160 --width=400 --text="Please enter your password" --title=Authentication)\n"
+[ -z $usr ] && usr="$(zenity --entry --height=160 --width=400 --text="Enter your IIIT-H email ID" --title=Authentication)"
+[ -z $passwd ] && passwd="$(zenity --password --height=160 --width=400 --text="Please enter your password" --title=Authentication)"
 cd;
 
 
