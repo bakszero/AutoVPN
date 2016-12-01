@@ -11,7 +11,7 @@ This is an automatic VPN installer/runner for IIIT-H students.
 3. sudo ./autovpn
 ```
 
-(Your official IIIT-H students/research email and password must be entered when prompted by the graphical user interface)
+(Your official IIIT-H students/research email and password must be entered when prompted by the terminal)
 
 **Requirements:**
 >
