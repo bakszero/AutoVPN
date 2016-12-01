@@ -25,6 +25,7 @@ You need to run the script with root access(sudo).
 **Troubleshooting**
 >The most common doubt everyone faces is how to get past when they face a proxy error. This is not an error, it's just that you're no longer on the IIIT-H network and you need to unset your proxy variables. 
 If you haven't yet unset your proxy variables, here's the way:
+>
 ```
 1. Open your terminal and type:
 unset http_proxy ; unset https_proxy ; unset HTTP_PROXY ; unset HTTPS_PROXY
@@ -36,6 +37,7 @@ Just changing in the browser does not help. Pretty obvious but yeah.
 
 4. If you're still unable to connect, a restart of your PC might be needed.
 ```
+
 
 
 *Pull requests and suggestions for improvement are most welcome.*
