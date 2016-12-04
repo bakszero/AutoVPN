@@ -58,15 +58,14 @@ cd /etc/openvpn;
 #rm -rf *
 if [ -e "ca.crt" ];
 then
-	rm ca.crt
+	rm -f ca.crt
 fi
-
 wget https://vpn.iiit.ac.in/ca.crt
-if [  -e "all.iiit.ac.in.crt" ];
+if [  -e "all.iiit.ac.in.crt" ] || [ -e "all.iiit.ac.in.crt.*" ];
 then
-	rm -f https://vpn.iiit.ac.in/all.iiit.ac.in.crt
+	rm -f all.iiit.ac.in.crt;
+	rm -f all.iiit.ac.in.crt.*;
 fi
-
 wget https://vpn.iiit.ac.in/all.iiit.ac.in.crt
 if [  -e "all.iiit.ac.in.key" ];
 then
@@ -98,7 +97,7 @@ passwd="${passwd//$'\\n'/}"
 
 
 
-echo $passwd
+#echo $passwd
 expect <<- DONE
 
 	spawn openvpn --config linux_client.conf;
@@ -108,7 +107,6 @@ expect <<- DONE
 	expect "Enter Auth Password:" { send "$passwd\r" }
 
 	expect "Initialization Sequence Completed"
-
 
 	interact;
 DONE
@@ -121,8 +119,12 @@ else
 sed -i '1i\'"nameserver 10.4.20.204" /etc/resolv.conf;
 fi
 
+if ! ping -c1 moodle.iiit.ac.in &>/dev/null
+then 
+zenity --error --height=100 --width=400 --title="An Error Occurred" --text="VPN failed to start. Contact the administrator or see troubleshooting on github.com/flyingcharge/AutoVPN"
+else
 zenity --info --title="SUCCESS" --text="VPN SUCCESSFULLY RUNNING!"
-
+fi
 sleep 3;
 #num=`history | tail -n 2 | head -n 1 | tr -s ' ' | cut -d ' ' -f 2`;
 
