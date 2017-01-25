@@ -13,9 +13,9 @@ passwd=$2;
 
 command -v zenity >/dev/null 2>&1 || {
         if command -v apt-get 2&>1; then
-                apt-get update; apt-get install zenity;
+                apt-get update; apt-get install -y zenity;
         elif command -v dnf 2&>1; then
-                dnf install zenity
+                dnf install -y zenity
         fi
 }
 
@@ -40,7 +40,7 @@ command -v openvpn >/dev/null 2>&1 || {
 }
 command -v expect >/dev/null 2>&1 || {
 	if command -v apt-get 2&>1; then    # Ubuntu based distros
-		apt-get update; apt-get install expect;
+		apt-get update; apt-get install -y expect;
 	elif command -v dnf 2&>1; then      # Fedora based distros
 		dnf install -y expect
 	fi
