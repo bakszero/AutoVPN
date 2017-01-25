@@ -33,7 +33,7 @@ cd;
 
 command -v openvpn >/dev/null 2>&1 || {
 	if command -v apt-get 2&>1; then    # Ubuntu based distros
-		apt-get update; apt-get install openvpn;
+		apt-get update; apt-get install -y openvpn;
 	elif command -v dnf 2&>1; then      # Fedora based distros
 		dnf install -y openvpn
 	fi
