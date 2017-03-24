@@ -22,16 +22,16 @@ command -v openvpn >/dev/null 2>&1 || {
 		dnf install -y openvpn
 	fi
 }
-if command -v apt-get 2&>1; then    # Ubuntu based distros
-	if [ $(dpkg-query -W -f='${Status}' openresolv 2>/dev/null | grep -c "ok installed") -eq 0 ];
-	then
-		apt-get -y install openresolv;
-	fi
-elif command -v dnf 2&>1; then
-	if ! rpm -qa | grep -qw openresolv; then
-	    dnf install -y openresolv
-	fi     # Fedora based distros
-fi
+# if command -v apt-get 2&>1; then    # Ubuntu based distros
+# 	if [ $(dpkg-query -W -f='${Status}' openresolv 2>/dev/null | grep -c "ok installed") -eq 0 ];
+# 	then
+# 		apt-get -y install openresolv;
+# 	fi
+# elif command -v dnf 2&>1; then
+# 	if ! rpm -qa | grep -qw openresolv; then
+# 	    dnf install -y openresolv
+# 	fi     # Fedora based distros
+# fi
 
 cd /etc/openvpn;
 if [ ! -e "ca.crt" ];
