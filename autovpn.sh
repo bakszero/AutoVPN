@@ -11,6 +11,15 @@ chmod +x $0
 usr=$1;
 passwd=$2;
 
+# Run in root if not already running in it
+if [[ $(whoami) != "root" ]]; then
+	xhost +SI:localuser:root
+	sudo "$0" "$@"
+	xhost -SI:localuser:root
+	exit
+fi
+
+
 command -v zenity >/dev/null 2>&1 || {
         if command -v apt-get 2&>1; then
                 apt-get update; apt-get install -y zenity;
