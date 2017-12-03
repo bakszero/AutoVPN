@@ -13,7 +13,9 @@ passwd=$2;
 
 # Run in root if not already running in it
 if [[ $(whoami) != "root" ]]; then
+	xhost +SI:localuser:root
 	sudo "$0" "$@"
+	xhost -SI:localuser:root
 	exit
 fi
 
