@@ -1,0 +1,3 @@
+Combined autovpn.sh and killvpn.sh into a single script with appropriate GUI prompts.
+Fixed a bug where script attempts to connect to VPN service with blank username and/or password
+Added appropriate author credits in the script(since the script was combined)
