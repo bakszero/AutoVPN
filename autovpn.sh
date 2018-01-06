@@ -185,6 +185,6 @@ then
 
 else 
 
-	`zenity --width=200 --height=160 --error --text="Enter C/D only "`
+	`zenity --width=200 --height=160 --error --text="Enter C/D only or Operation Cancelled"`
 
 fi
